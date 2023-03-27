@@ -5,21 +5,21 @@
   
 
   
-  <title>article title | Ys的个人博客</title>
+  <title>ingress-nginx | Ys的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="ssdfsssssssssssssss sdfasdf sdf  s s s y">
+  <meta name="description" content="一、Ingress-nginx介绍首先，我们知道K8S中暴露service的三种方式：ClusterIP、NodePort与LoadBalance 这几种方式都是在service的维度提供的，service的作用体现在两个方面，对集群内部，它不断跟踪pod的变化，更新endpoint中对应pod的对象，提供了ip不断变化的pod的服务发现机制，对集群外部，他类似负载均衡器，可以在集群内外部对pod">
 <meta property="og:type" content="article">
-<meta property="og:title" content="article title">
-<meta property="og:url" content="http://example.com/2023/03/27/article-title/index.html">
+<meta property="og:title" content="ingress-nginx">
+<meta property="og:url" content="http://example.com/2023/03/27/ingress-nginx/index.html">
 <meta property="og:site_name" content="Ys的个人博客">
-<meta property="og:description" content="ssdfsssssssssssssss sdfasdf sdf  s s s y">
+<meta property="og:description" content="一、Ingress-nginx介绍首先，我们知道K8S中暴露service的三种方式：ClusterIP、NodePort与LoadBalance 这几种方式都是在service的维度提供的，service的作用体现在两个方面，对集群内部，它不断跟踪pod的变化，更新endpoint中对应pod的对象，提供了ip不断变化的pod的服务发现机制，对集群外部，他类似负载均衡器，可以在集群内外部对pod">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/2023/03/27/article-title/image-20230327125357257.png">
-<meta property="article:published_time" content="2023-03-27T04:24:17.645Z">
-<meta property="article:modified_time" content="2023-03-27T04:53:58.926Z">
+<meta property="og:image" content="http://example.com/2023/03/27/ingress-nginx/bVbvcFX.png">
+<meta property="article:published_time" content="2023-03-27T05:00:36.807Z">
+<meta property="article:modified_time" content="2023-03-27T05:02:09.427Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2023/03/27/article-title/image-20230327125357257.png">
+<meta name="twitter:image" content="http://example.com/2023/03/27/ingress-nginx/bVbvcFX.png">
   
     <link rel="alternate" href="/atom.xml" title="Ys的个人博客" type="application/atom+xml">
   
@@ -68,10 +68,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-article-title" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-ingress-nginx" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2023/03/27/article-title/" class="article-date">
-  <time datetime="2023-03-27T04:24:17.645Z" itemprop="datePublished">2023-03-27</time>
+    <a href="/2023/03/27/ingress-nginx/" class="article-date">
+  <time datetime="2023-03-27T05:00:36.807Z" itemprop="datePublished">2023-03-27</time>
 </a>
     
   </div>
@@ -82,7 +82,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      article title
+      ingress-nginx
     </h1>
   
 
@@ -90,19 +90,16 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>ssdfsssssssssssssss</p>
-<p>sdfasdf</p>
-<p>sdf</p>
-<p><img src="/2023/03/27/article-title/image-20230327125357257.png" alt="image-20230327125357257"></p>
-<p>s</p>
-<p>s</p>
-<p>s</p>
-<p>y</p>
+        <h1 id="一、Ingress-nginx介绍"><a href="#一、Ingress-nginx介绍" class="headerlink" title="一、Ingress-nginx介绍"></a>一、Ingress-nginx介绍</h1><p>首先，我们知道K8S中暴露service的三种方式：ClusterIP、NodePort与LoadBalance</p>
+<p>这几种方式都是在service的维度提供的，service的作用体现在两个方面，对集群内部，它不断跟踪pod的变化，更新endpoint中对应pod的对象，提供了ip不断变化的pod的服务发现机制，对集群外部，他类似负载均衡器，可以在集群内外部对pod进行访问。但是，单独用service暴露服务的方式，在实际生产环境中不太合适</p>
+<p>ClusterIP的方式只能在集群内部访问。<br>NodePort方式的话，测试环境使用还行，当有几十上百的服务在集群中运行时，NodePort的端口管理是灾难。<br>LoadBalance方式受限于云平台，且通常在云平台部署ELB还需要额外的费用。</p>
+<p>所幸k8s还提供了一种集群维度暴露服务的方式，也就是ingress。ingress可以简单理解为service的service，他通过独立的ingress对象来制定请求转发的规则，把请求路由到一个或多个service中。这样就把服务与请求规则解耦了，可以从业务维度统一考虑业务的暴露，而不用为每个service单独考虑。<br>举个例子，现在集群有api、文件存储、前端3个service，可以通过一个ingress对象来实现图中的请求转发：</p>
+<p><img src="/2023/03/27/ingress-nginx/bVbvcFX.png" alt="clipboard.png"></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2023/03/27/article-title/" data-id="clfqcefaj00006cjh9a9iek37" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2023/03/27/ingress-nginx/" data-id="clfqd3hdj0000z8jh9omcdmte" class="article-share-link">Share</a>
       
       
     </footer>
@@ -151,7 +148,7 @@
       <ul>
         
           <li>
-            <a href="/2023/03/27/article-title/">article title</a>
+            <a href="/2023/03/27/ingress-nginx/">ingress-nginx</a>
           </li>
         
           <li>
