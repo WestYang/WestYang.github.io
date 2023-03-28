@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-03-27T05:02:09.427Z</updated>
+  <updated>2023-03-27T07:21:25.481Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,14 +21,14 @@
     <link href="http://example.com/2023/03/27/ingress-nginx/"/>
     <id>http://example.com/2023/03/27/ingress-nginx/</id>
     <published>2023-03-27T05:00:36.807Z</published>
-    <updated>2023-03-27T05:02:09.427Z</updated>
+    <updated>2023-03-27T07:21:25.481Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="一、Ingress-nginx介绍"><a href="#一、Ingress-nginx介绍" class="headerlink" title="一、Ingress-nginx介绍"></a>一、Ingress-nginx介绍</h1><p>首先，我们知道K8S中暴露service的三种方式：ClusterIP、NodePort与LoadBalance</p><p>这几种方式都是在service的维度提供的，service的作用体现在两个方面，对集群内部，它不断跟踪pod的变化，更新endpoint中对应pod的对象，提供了ip不断变化的pod的服务发现机制，对集群外部，他类似负载均衡器，可以在集群内外部对pod进行访问。但是，单独用service暴露服务的方式，在实际生产环境中不太合适</p><p>ClusterIP的方式只能在集群内部访问。<br>NodePort方式的话，测试环境使用还行，当有几十上百的服务在集群中运行时，NodePort的端口管理是灾难。<br>LoadBalance方式受限于云平台，且通常在云平台部署ELB还需要额外的费用。</p><p>所幸k8s还提供了一种集群维度暴露服务的方式，也就是ingress。ingress可以简单理解为service的service，他通过独立的ingress对象来制定请求转发的规则，把请求路由到一个或多个service中。这样就把服务与请求规则解耦了，可以从业务维度统一考虑业务的暴露，而不用为每个service单独考虑。<br>举个例子，现在集群有api、文件存储、前端3个service，可以通过一个ingress对象来实现图中的请求转发：</p><p><img src="/2023/03/27/ingress-nginx/bVbvcFX.png" alt="clipboard.png"></p>]]></content>
+    <content type="html"><![CDATA[<h2 id="一、K8S暴露服务的方式"><a href="#一、K8S暴露服务的方式" class="headerlink" title="一、K8S暴露服务的方式"></a>一、K8S暴露服务的方式</h2><p>首先，我们知道K8S中暴露service的三种方式：ClusterIP、NodePort与LoadBalance</p><p>这几种方式都是在service的维度提供的，service的作用体现在两个方面，对集群内部，它不断跟踪pod的变化，更新endpoint中对应pod的对象，提供了ip不断变化的pod的服务发现机制，对集群外部，他类似负载均衡器，可以在集群内外部对pod进行访问。但是，<strong>单独用service暴露服务的方式，在实际生产环境中不太合适</strong></p><ul><li>ClusterIP: 这是默认的服务类型，用于在 Kubernetes 集群内部创建一个虚拟 IP 地址，使得在集群内部的其他服务能够通过该 IP 地址访问该服务。这种服务类型仅在 Kubernetes 集群内部使用，并且不会暴露给集群外部。</li><li>NodePort: 这种服务类型会在每个节点上创建一个端口，并将该端口映射到 Kubernetes 服务的端口上。这样一来，集群外部的客户端就可以通过任意一个节点的 IP 地址和该端口号访问该服务。</li><li>LoadBalancer: 这种服务类型通常用于将 Kubernetes 服务暴露给集群外部。它使用外部负载均衡器来自动地将客户端请求分配到 Kubernetes 服务的后端 Pod 上。使用这种服务类型需要一个负载均衡器，例如云服务提供商的负载均衡器或者物理负载均衡器。</li></ul><h2 id="二、什么是ingress"><a href="#二、什么是ingress" class="headerlink" title="二、什么是ingress?"></a>二、什么是ingress?</h2><p>​        ingress可以简单理解为service的service，他通过独立的ingress对象来制定请求转发的规则，把请求路由到一个或多个service中。这样就把服务与请求规则解耦了，可以从业务维度统一考虑业务的暴露，而不用为每个service单独考虑。<br>举个例子，现在集群有api、文件存储、前端3个service，可以通过一个ingress对象来实现图中的请求转发：</p><p><img src="/2023/03/27/ingress-nginx/bVbvcFX.png" alt="clipboard.png"></p><p>ingress规则是很灵活的，可以根据不同域名、不同path转发请求到不同的service，并且支持https/http。</p><h2 id="三、为什么要用ingress"><a href="#三、为什么要用ingress" class="headerlink" title="三、为什么要用ingress?"></a>三、为什么要用ingress?</h2><ol><li>简化访问<br>使用 Ingress 可以为多个服务提供一个公共的入口，并通过不同的 URL 路径将流量路由到不同的服务中，从而简化了集群外部的访问。</li><li>简化网络<br>在没有 Ingress 的情况下，每个服务都需要拥有自己的 LoadBalancer，这会增加网络的复杂性和成本。使用 Ingress 可以将多个服务共享一个 LoadBalancer，并且使用不同的 URL 路径进行流量路由，从而简化了网络架构。</li><li>支持 TLS中止<br>Ingress 可以用于终止 HTTPS 流量，并将其转发到后端的服务。这可以让集群中的服务保持安全，而无需在每个服务中配置证书。</li><li>支持负载均衡<br>Ingress 支持多种负载均衡算法，并且可以将流量均衡到多个后端服务中，从而提高了集群的可用性和性能。</li></ol><h2 id="四、ingress与ingress-controller"><a href="#四、ingress与ingress-controller" class="headerlink" title="四、ingress与ingress-controller"></a>四、ingress与ingress-controller</h2><p>要理解ingress，需要区分两个概念，ingress和ingress-controller：</p><ul><li>ingress对象：<br>指的是k8s中的一个api对象，一般用yaml配置。作用是定义请求如何转发到service的规则，可以理解为配置模板。</li><li>ingress-controller：<br>具体实现反向代理及负载均衡的程序，对ingress定义的规则进行解析，根据配置的规则来实现请求转发。</li></ul><p>简单来说，ingress-controller才是负责具体转发的组件，通过各种方式将它暴露在集群入口，外部对集群的请求流量会先到ingress-controller，而ingress对象是用来告诉ingress-controller该如何转发请求，比如哪些域名哪些path要转发到哪些服务等等。</p><h3 id="ingress-controller"><a href="#ingress-controller" class="headerlink" title="ingress-controller"></a>ingress-controller</h3><p>ingress-controller并不是k8s自带的组件，实际上ingress-controller只是一个统称，用户可以选择不同的ingress-controller实现，以下是一些常见的Ingress Controller：</p><ol><li>Ingress nginx Controller：基于Nginx的Ingress Controller，由Kubernetes社区基于Nginx Web服务器开发的，并补充了一组用于实现额外功能的Lua插件。</li><li>Traefik Ingress Controller：基于Traefik的Ingress Controller，可以自动发现新服务、动态配置和自我修复。它还支持多种负载均衡算法和SSL证书管理。</li><li>HAProxy Ingress Controller：基于HAProxy的Ingress Controller，提供了高可用性、SSL终止和多种负载均衡算法。它还支持与Kubernetes的DNS和服务发现集成。</li><li>Istio Ingress Controller：基于Istio的Ingress Controller，提供了强大的流量管理和安全功能，例如流量路由、流量控制和强制性安全。</li><li>Kong Ingress Controller：基于Kong的Ingress Controller，提供了强大的API网关功能和扩展性。它还支持负载均衡、SSL终止和服务发现。</li></ol><h3 id="ingress"><a href="#ingress" class="headerlink" title="ingress"></a>ingress</h3><p>ingress是一个API对象，和其他对象一样，通过yaml文件来配置。ingress通过http或https暴露集群内部service，给service提供外部URL、负载均衡、SSL/TLS能力以及基于host的方向代理。ingress要依靠ingress-controller来具体实现以上功能。</p>]]></content>
     
     
       
       
-    <summary type="html">&lt;h1 id=&quot;一、Ingress-nginx介绍&quot;&gt;&lt;a href=&quot;#一、Ingress-nginx介绍&quot; class=&quot;headerlink&quot; title=&quot;一、Ingress-nginx介绍&quot;&gt;&lt;/a&gt;一、Ingress-nginx介绍&lt;/h1&gt;&lt;p&gt;首先，我们知道K8S</summary>
+    <summary type="html">&lt;h2 id=&quot;一、K8S暴露服务的方式&quot;&gt;&lt;a href=&quot;#一、K8S暴露服务的方式&quot; class=&quot;headerlink&quot; title=&quot;一、K8S暴露服务的方式&quot;&gt;&lt;/a&gt;一、K8S暴露服务的方式&lt;/h2&gt;&lt;p&gt;首先，我们知道K8S中暴露service的三种方式：Clus</summary>
       
     
     
