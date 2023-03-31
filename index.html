@@ -126,7 +126,7 @@
 </tr>
 </tbody></table>
 <p>发现/var/log/messages有几个G的日志。查看日志内容发现rsyslog把Journal的log都进行的输出和汇总。</p>
-<p>当容器越多是，log也就会也多，内存占用也就越多。</p>
+<p>当容器越多时，log也就会也多，内存占用也就越多。</p>
 <p>同时也可能导致systemd-journald内存占用过高</p>
 <p><strong>1、修改Journal的配置/etc/systemd/journald.conf</strong></p>
 <p>把Storage改为none，如下</p>

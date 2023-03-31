@@ -15,7 +15,7 @@
 <meta property="og:description" content="解决方法（限制服务内存使用率） 1、修改rsyslogd服务配置文件 vim &#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;rsyslog.service 在Service配置中添加MemoryAccounting&#x3D;yes，MemoryMax&#x3D;80M，MemoryHigh&#x3D;8M三项如下所示。 1234567891011121314151617181920212223[Unit]Descripti">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-03-31T03:14:11.543Z">
-<meta property="article:modified_time" content="2023-03-31T03:15:19.147Z">
+<meta property="article:modified_time" content="2023-03-31T03:20:11.496Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -128,7 +128,7 @@
 </tr>
 </tbody></table>
 <p>发现/var/log/messages有几个G的日志。查看日志内容发现rsyslog把Journal的log都进行的输出和汇总。</p>
-<p>当容器越多是，log也就会也多，内存占用也就越多。</p>
+<p>当容器越多时，log也就会也多，内存占用也就越多。</p>
 <p>同时也可能导致systemd-journald内存占用过高</p>
 <p><strong>1、修改Journal的配置/etc/systemd/journald.conf</strong></p>
 <p>把Storage改为none，如下</p>
