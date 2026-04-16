@@ -66,6 +66,18 @@ pagination_dir: page
 ## Themes: https://hexo.io/themes/
 theme: landscape
 
+# GitHub Pages
+## Disable Jekyll processing
+## This is important to prevent GitHub Pages from using Jekyll
+## instead of our Hexo build
+exclude:
+  - node_modules
+  - package.json
+  - package-lock.json
+  - .gitignore
+  - README.md
+  - .github
+
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
