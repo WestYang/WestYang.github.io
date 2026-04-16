@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>归档 - 杨森的学习笔记</title>
-    <meta name="description" content="所有文章的归档列表">
+    <title>代理配置指南 - 杨森的学习笔记</title>
+    <meta name="description" content="yum、docker和pip的代理配置方法">
     <meta name="author" content="杨森">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
@@ -17,7 +17,7 @@
                 <a href="/" class="text-2xl font-bold text-gray-800">杨森的学习笔记</a>
                 <div class="hidden md:flex space-x-6">
                     <a href="/" class="text-gray-600 hover:text-blue-500">首页</a>
-                    <a href="/archives.html" class="text-blue-500 font-medium">归档</a>
+                    <a href="/archives.html" class="text-gray-600 hover:text-blue-500">归档</a>
                     <a href="/about.html" class="text-gray-600 hover:text-blue-500">关于</a>
                 </div>
                 <div class="md:hidden">
@@ -31,7 +31,7 @@
             <!-- 移动端菜单 -->
             <div id="mobile-menu" class="md:hidden hidden mt-4 pb-2">
                 <a href="/" class="block py-2 text-gray-600 hover:text-blue-500">首页</a>
-                <a href="/archives.html" class="block py-2 text-blue-500 font-medium">归档</a>
+                <a href="/archives.html" class="block py-2 text-gray-600 hover:text-blue-500">归档</a>
                 <a href="/about.html" class="block py-2 text-gray-600 hover:text-blue-500">关于</a>
             </div>
         </div>
@@ -40,44 +40,44 @@
     <!-- 主内容区 -->
     <main class="container mx-auto px-4 py-8">
         <div class="flex flex-col md:flex-row">
-            <!-- 归档内容 -->
+            <!-- 文章内容 -->
             <div class="md:w-2/3 pr-0 md:pr-8">
                 <div class="bg-white rounded-lg shadow-md p-6">
-                    <h1 class="text-3xl font-bold mb-6">归档</h1>
+                    <div class="flex items-center text-gray-500 text-sm mb-4">
+                        <span>2026-04-16</span>
+                        <span class="mx-2">•</span>
+                        <span>技术笔记</span>
+                    </div>
+                    <h1 class="text-3xl font-bold mb-6">代理配置指南</h1>
+                    <div class="article-content text-gray-700">
+                        <h2>1. yum配置代理</h2>
+                        <pre><code># vim /etc/yum.conf
+# 加入下面一行代理配置
+proxy= http://10.33.49.191:10809</code></pre>
+
+                        <h2>2. docker 配置代理</h2>
+                        <pre><code>sudo mkdir -p /etc/systemd/system/docker.service.d
+vim /etc/systemd/system/docker.service.d/http-proxy.conf    
+#添加代理配置
+[Service]
+Environment="HTTP_PROXY=http://your-proxy-server:port/"
+Environment="HTTPS_PROXY=https://your-proxy-server:port/"
+Environment="NO_PROXY=localhost,127.0.0.1,.example.com"</code></pre>
+
+                        <h2>3. pip配置代理和源</h2>
+                        <pre><code>pip config set global.proxy http://10.100.28.114:3180
+pip config set global.index-url https://mirrors.ustc.edu.cn/pypi/simple
+pip config set global.trusted-host mirrors.ustc.edu.cn</code></pre>
+                    </div>
                     
-                    <!-- 2026年 -->
-                    <div class="mb-8">
-                        <h2 class="text-xl font-bold mb-4">2026年</h2>
-                        
-                        <!-- 4月 -->
-                        <div class="mb-6">
-                            <h3 class="text-lg font-semibold mb-3 text-gray-700">4月</h3>
-                            <ul class="space-y-3">
-                                <li>
-                                    <a href="/blog/proxy-configuration.html" class="flex items-center text-gray-800 hover:text-blue-500">
-                                        <span class="text-gray-500 w-24">16日</span>
-                                        <span>代理配置指南</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/blog/hello-world.html" class="flex items-center text-gray-800 hover:text-blue-500">
-                                        <span class="text-gray-500 w-24">16日</span>
-                                        <span>Hello World</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/blog/frontend-tips.html" class="flex items-center text-gray-800 hover:text-blue-500">
-                                        <span class="text-gray-500 w-24">15日</span>
-                                        <span>前端开发技巧总结</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/blog/backend-best-practices.html" class="flex items-center text-gray-800 hover:text-blue-500">
-                                        <span class="text-gray-500 w-24">14日</span>
-                                        <span>后端开发最佳实践</span>
-                                    </a>
-                                </li>
-                            </ul>
+                    <!-- 文章标签 -->
+                    <div class="mt-8 pt-6 border-t border-gray-200">
+                        <h3 class="text-sm font-bold text-gray-500 uppercase mb-3">标签</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <a href="#" class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm hover:bg-blue-100 hover:text-blue-500">代理配置</a>
+                            <a href="#" class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm hover:bg-blue-100 hover:text-blue-500">yum</a>
+                            <a href="#" class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm hover:bg-blue-100 hover:text-blue-500">docker</a>
+                            <a href="#" class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm hover:bg-blue-100 hover:text-blue-500">pip</a>
                         </div>
                     </div>
                 </div>
