@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>杨森的学习笔记</title>
-    <meta name="description" content="杨森的技术学习笔记和博客">
+    <title>关于 - 杨森的学习笔记</title>
+    <meta name="description" content="关于杨森的学习笔记">
     <meta name="author" content="杨森">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
@@ -18,7 +18,7 @@
                 <div class="hidden md:flex space-x-6">
                     <a href="/" class="text-gray-600 hover:text-blue-500">首页</a>
                     <a href="/archives.html" class="text-gray-600 hover:text-blue-500">归档</a>
-                    <a href="/about.html" class="text-gray-600 hover:text-blue-500">关于</a>
+                    <a href="/about.html" class="text-blue-500 font-medium">关于</a>
                 </div>
                 <div class="md:hidden">
                     <button id="menu-toggle" class="text-gray-600 focus:outline-none">
@@ -32,7 +32,7 @@
             <div id="mobile-menu" class="md:hidden hidden mt-4 pb-2">
                 <a href="/" class="block py-2 text-gray-600 hover:text-blue-500">首页</a>
                 <a href="/archives.html" class="block py-2 text-gray-600 hover:text-blue-500">归档</a>
-                <a href="/about.html" class="block py-2 text-gray-600 hover:text-blue-500">关于</a>
+                <a href="/about.html" class="block py-2 text-blue-500 font-medium">关于</a>
             </div>
         </div>
     </nav>
@@ -40,46 +40,39 @@
     <!-- 主内容区 -->
     <main class="container mx-auto px-4 py-8">
         <div class="flex flex-col md:flex-row">
-            <!-- 文章列表 -->
+            <!-- 关于内容 -->
             <div class="md:w-2/3 pr-0 md:pr-8">
-                <!-- 文章卡片 -->
-                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-                    <div class="flex items-center text-gray-500 text-sm mb-4">
-                        <span>2026-04-16</span>
-                        <span class="mx-2">•</span>
-                        <span>技术笔记</span>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h1 class="text-3xl font-bold mb-6">关于我</h1>
+                    
+                    <div class="article-content text-gray-700">
+                        <p>你好，我是杨森，一名技术爱好者，专注于前端和后端开发。</p>
+                        
+                        <h2>我的背景</h2>
+                        <p>我拥有计算机科学相关学位，多年来一直从事软件开发工作。我对各种技术都有浓厚的兴趣，尤其是Web开发、移动应用开发和云计算领域。</p>
+                        
+                        <h2>技术栈</h2>
+                        <ul>
+                            <li><strong>前端</strong>：HTML5, CSS3, JavaScript, React, Vue, Tailwind CSS</li>
+                            <li><strong>后端</strong>：Node.js, Express, Python, Django, Flask</li>
+                            <li><strong>数据库</strong>：MySQL, PostgreSQL, MongoDB, Redis</li>
+                            <li><strong>工具</strong>：Git, Docker, Webpack, Vite</li>
+                        </ul>
+                        
+                        <h2>关于这个博客</h2>
+                        <p>这个博客是我用来记录学习过程、分享技术知识和心得体会的地方。我希望通过这个平台，能够与更多的技术爱好者交流，共同成长。</p>
+                        <p>我会定期更新一些关于前端开发、后端开发、工具使用等方面的内容，也会分享一些学习资源和行业动态。</p>
+                        
+                        <h2>联系我</h2>
+                        <p>如果你有任何问题或建议，欢迎通过以下方式联系我：</p>
+                        <ul>
+                            <li>邮箱：example@example.com</li>
+                            <li>GitHub：<a href="#" class="text-blue-500 hover:underline">github.com/westyang</a></li>
+                            <li>LinkedIn：<a href="#" class="text-blue-500 hover:underline">linkedin.com/in/westyang</a></li>
+                        </ul>
+                        
+                        <p>感谢你的访问！</p>
                     </div>
-                    <h2 class="text-2xl font-bold mb-3">
-                        <a href="/blog/hello-world.html" class="text-gray-800 hover:text-blue-500">Hello World</a>
-                    </h2>
-                    <p class="text-gray-600 mb-4">欢迎来到我的博客！这是我的第一篇文章，我将在这里分享我的技术学习笔记和心得。</p>
-                    <a href="/blog/hello-world.html" class="text-blue-500 hover:underline">阅读更多</a>
-                </div>
-
-                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-                    <div class="flex items-center text-gray-500 text-sm mb-4">
-                        <span>2026-04-15</span>
-                        <span class="mx-2">•</span>
-                        <span>前端开发</span>
-                    </div>
-                    <h2 class="text-2xl font-bold mb-3">
-                        <a href="/blog/frontend-tips.html" class="text-gray-800 hover:text-blue-500">前端开发技巧总结</a>
-                    </h2>
-                    <p class="text-gray-600 mb-4">总结了一些前端开发中常用的技巧和最佳实践，包括HTML、CSS和JavaScript的使用方法。</p>
-                    <a href="/blog/frontend-tips.html" class="text-blue-500 hover:underline">阅读更多</a>
-                </div>
-
-                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-                    <div class="flex items-center text-gray-500 text-sm mb-4">
-                        <span>2026-04-14</span>
-                        <span class="mx-2">•</span>
-                        <span>后端开发</span>
-                    </div>
-                    <h2 class="text-2xl font-bold mb-3">
-                        <a href="/blog/backend-best-practices.html" class="text-gray-800 hover:text-blue-500">后端开发最佳实践</a>
-                    </h2>
-                    <p class="text-gray-600 mb-4">分享后端开发中的最佳实践，包括API设计、数据库优化和性能调优等方面的内容。</p>
-                    <a href="/blog/backend-best-practices.html" class="text-blue-500 hover:underline">阅读更多</a>
                 </div>
             </div>
 

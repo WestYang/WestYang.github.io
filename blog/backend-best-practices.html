@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>杨森的学习笔记</title>
-    <meta name="description" content="杨森的技术学习笔记和博客">
+    <title>后端开发最佳实践 - 杨森的学习笔记</title>
+    <meta name="description" content="分享后端开发中的最佳实践，包括API设计、数据库优化和性能调优等方面的内容。">
     <meta name="author" content="杨森">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
@@ -40,46 +40,82 @@
     <!-- 主内容区 -->
     <main class="container mx-auto px-4 py-8">
         <div class="flex flex-col md:flex-row">
-            <!-- 文章列表 -->
+            <!-- 文章内容 -->
             <div class="md:w-2/3 pr-0 md:pr-8">
-                <!-- 文章卡片 -->
-                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-                    <div class="flex items-center text-gray-500 text-sm mb-4">
-                        <span>2026-04-16</span>
-                        <span class="mx-2">•</span>
-                        <span>技术笔记</span>
-                    </div>
-                    <h2 class="text-2xl font-bold mb-3">
-                        <a href="/blog/hello-world.html" class="text-gray-800 hover:text-blue-500">Hello World</a>
-                    </h2>
-                    <p class="text-gray-600 mb-4">欢迎来到我的博客！这是我的第一篇文章，我将在这里分享我的技术学习笔记和心得。</p>
-                    <a href="/blog/hello-world.html" class="text-blue-500 hover:underline">阅读更多</a>
-                </div>
-
-                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-                    <div class="flex items-center text-gray-500 text-sm mb-4">
-                        <span>2026-04-15</span>
-                        <span class="mx-2">•</span>
-                        <span>前端开发</span>
-                    </div>
-                    <h2 class="text-2xl font-bold mb-3">
-                        <a href="/blog/frontend-tips.html" class="text-gray-800 hover:text-blue-500">前端开发技巧总结</a>
-                    </h2>
-                    <p class="text-gray-600 mb-4">总结了一些前端开发中常用的技巧和最佳实践，包括HTML、CSS和JavaScript的使用方法。</p>
-                    <a href="/blog/frontend-tips.html" class="text-blue-500 hover:underline">阅读更多</a>
-                </div>
-
-                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <div class="bg-white rounded-lg shadow-md p-6">
                     <div class="flex items-center text-gray-500 text-sm mb-4">
                         <span>2026-04-14</span>
                         <span class="mx-2">•</span>
                         <span>后端开发</span>
                     </div>
-                    <h2 class="text-2xl font-bold mb-3">
-                        <a href="/blog/backend-best-practices.html" class="text-gray-800 hover:text-blue-500">后端开发最佳实践</a>
-                    </h2>
-                    <p class="text-gray-600 mb-4">分享后端开发中的最佳实践，包括API设计、数据库优化和性能调优等方面的内容。</p>
-                    <a href="/blog/backend-best-practices.html" class="text-blue-500 hover:underline">阅读更多</a>
+                    <h1 class="text-3xl font-bold mb-6">后端开发最佳实践</h1>
+                    <div class="article-content text-gray-700">
+                        <p>后端开发是构建Web应用的重要组成部分，良好的后端设计和实践可以提高应用的性能、安全性和可维护性。本文分享一些后端开发中的最佳实践。</p>
+                        
+                        <h2>API设计</h2>
+                        <ul>
+                            <li><strong>RESTful API</strong>：遵循RESTful设计原则，使用HTTP方法（GET、POST、PUT、DELETE）表示资源操作。</li>
+                            <li><strong>API版本控制</strong>：使用版本号管理API，如 /api/v1/users，确保向后兼容性。</li>
+                            <li><strong>统一响应格式</strong>：使用统一的响应格式，包含状态码、消息和数据，便于前端处理。</li>
+                            <li><strong>错误处理</strong>：提供清晰的错误信息，使用适当的HTTP状态码。</li>
+                        </ul>
+                        
+                        <h2>数据库设计与优化</h2>
+                        <ul>
+                            <li><strong>数据库范式</strong>：遵循数据库设计范式，减少数据冗余。</li>
+                            <li><strong>索引优化</strong>：为常用查询字段创建索引，提高查询性能。</li>
+                            <li><strong>查询优化</strong>：避免全表扫描，使用分页和限流，减少查询复杂度。</li>
+                            <li><strong>事务管理</strong>：使用事务确保数据一致性，特别是在涉及多个操作的场景。</li>
+                            <li><strong>连接池</strong>：使用数据库连接池，减少连接建立和关闭的开销。</li>
+                        </ul>
+                        
+                        <h2>安全性</h2>
+                        <ul>
+                            <li><strong>认证与授权</strong>：使用JWT、OAuth等认证机制，实现基于角色的访问控制。</li>
+                            <li><strong>输入验证</strong>：对所有用户输入进行验证，防止SQL注入、XSS等攻击。</li>
+                            <li><strong>密码处理</strong>：使用bcrypt等算法对密码进行哈希处理，避免明文存储。</li>
+                            <li><strong>HTTPS</strong>：使用HTTPS加密传输数据，保护用户信息。</li>
+                            <li><strong>CSRF防护</strong>：实现CSRF令牌，防止跨站请求伪造攻击。</li>
+                        </ul>
+                        
+                        <h2>性能优化</h2>
+                        <ul>
+                            <li><strong>缓存策略</strong>：使用Redis、Memcached等缓存工具，减少数据库查询。</li>
+                            <li><strong>异步处理</strong>：使用消息队列处理耗时操作，提高系统响应速度。</li>
+                            <li><strong>负载均衡</strong>：使用负载均衡器分发请求，提高系统可用性和扩展性。</li>
+                            <li><strong>代码优化</strong>：减少不必要的计算和I/O操作，优化算法和数据结构。</li>
+                            <li><strong>监控与日志</strong>：实现系统监控和日志记录，及时发现和解决性能问题。</li>
+                        </ul>
+                        
+                        <h2>代码质量</h2>
+                        <ul>
+                            <li><strong>模块化设计</strong>：将代码拆分为模块化的组件，提高代码可维护性。</li>
+                            <li><strong>代码规范</strong>：遵循一致的代码风格和命名规范。</li>
+                            <li><strong>单元测试</strong>：编写单元测试，确保代码质量和功能正确性。</li>
+                            <li><strong>文档</strong>：编写清晰的API文档和代码注释，便于团队协作和维护。</li>
+                        </ul>
+                        
+                        <h2>部署与 DevOps</h2>
+                        <ul>
+                            <li><strong>自动化部署</strong>：使用CI/CD工具（如Jenkins、GitHub Actions）实现自动化部署。</li>
+                            <li><strong>容器化</strong>：使用Docker容器化应用，提高部署一致性和可移植性。</li>
+                            <li><strong>环境隔离</strong>：使用不同的环境（开发、测试、生产），避免环境差异导致的问题。</li>
+                            <li><strong>配置管理</strong>：使用环境变量或配置文件管理不同环境的配置。</li>
+                        </ul>
+                        
+                        <p>以上是一些后端开发中的最佳实践，不同的项目和技术栈可能会有不同的具体实现方式。关键是要根据项目需求和团队情况，选择合适的实践方法，不断优化和改进。</p>
+                    </div>
+                    
+                    <!-- 文章标签 -->
+                    <div class="mt-8 pt-6 border-t border-gray-200">
+                        <h3 class="text-sm font-bold text-gray-500 uppercase mb-3">标签</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <a href="#" class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm hover:bg-blue-100 hover:text-blue-500">后端开发</a>
+                            <a href="#" class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm hover:bg-blue-100 hover:text-blue-500">API设计</a>
+                            <a href="#" class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm hover:bg-blue-100 hover:text-blue-500">数据库优化</a>
+                            <a href="#" class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm hover:bg-blue-100 hover:text-blue-500">安全性</a>
+                        </div>
+                    </div>
                 </div>
             </div>
 
