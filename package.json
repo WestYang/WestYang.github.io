@@ -1,0 +1,21 @@
+{
+  "name": "westyang-blog",
+  "version": "1.0.0",
+  "description": "杨森的学习笔记",
+  "main": "index.js",
+  "scripts": {
+    "build": "hexo generate",
+    "clean": "hexo clean",
+    "deploy": "hexo deploy"
+  },
+  "dependencies": {
+    "hexo": "^6.3.0",
+    "hexo-deployer-git": "^3.0.0"
+  },
+  "devDependencies": {
+    "hexo-cli": "^4.3.0"
+  },
+  "keywords": ["blog", "hexo"],
+  "author": "杨森",
+  "license": "MIT"
+}
