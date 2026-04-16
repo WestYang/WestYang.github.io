@@ -2,10 +2,7 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - master  # 你的主分支
-  pull_request:
-    branches:
-      - master
+      - source  # 源代码分支
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,20 +16,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '18'  # 使用更新的Node.js版本
           cache: 'npm'
       
       - name: Install Dependencies
         run: npm install
       
-      - name: Install Hexo CLI
-        run: npm install -g hexo-cli
-      
-      - name: Clean
-        run: hexo clean
-      
       - name: Build
-        run: hexo generate
+        run: npx hexo generate
       
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
