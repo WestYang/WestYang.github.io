@@ -1,0 +1,250 @@
+/* 全局样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* 头部样式 */
+header {
+    background-color: #fff;
+    padding: 40px 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+h1 {
+    color: #2c3e50;
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #7f8c8d;
+    font-size: 1.2em;
+}
+
+/* 导航样式 */
+nav {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px 0;
+    margin-bottom: 30px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+nav a:hover {
+    background-color: #2980b9;
+}
+
+/* 文章样式 */
+.post {
+    background: #fff;
+    padding: 30px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.post h2 {
+    color: #34495e;
+    margin-bottom: 10px;
+}
+
+.post-meta {
+    color: #7f8c8d;
+    font-size: 0.9em;
+    margin-bottom: 20px;
+}
+
+.post-content {
+    margin-bottom: 20px;
+}
+
+.read-more {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #3498db;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.read-more:hover {
+    background-color: #2980b9;
+}
+
+/* 文章页面样式 */
+.article-content {
+    background: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.article-content h1 {
+    margin-bottom: 20px;
+}
+
+.article-content h2 {
+    margin-top: 30px;
+    margin-bottom: 15px;
+    color: #34495e;
+}
+
+.article-content p {
+    margin-bottom: 15px;
+}
+
+.article-content code {
+    background-color: #f8f8f8;
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.article-content pre {
+    background-color: #f8f8f8;
+    padding: 15px;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin-bottom: 15px;
+}
+
+.article-content pre code {
+    background-color: transparent;
+    padding: 0;
+}
+
+/* 标签样式 */
+.tags {
+    margin-top: 20px;
+}
+
+.tag {
+    display: inline-block;
+    padding: 4px 10px;
+    background-color: #f0f0f0;
+    color: #333;
+    border-radius: 16px;
+    font-size: 0.8em;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+/* 归档页面样式 */
+.archive {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.archive h2 {
+    margin-bottom: 20px;
+    color: #34495e;
+}
+
+.archive ul {
+    list-style: none;
+}
+
+.archive li {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.archive li:last-child {
+    border-bottom: none;
+}
+
+.archive a {
+    color: #333;
+    text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+}
+
+.archive a:hover {
+    color: #3498db;
+}
+
+/* 关于页面样式 */
+.about {
+    background: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.about h2 {
+    margin-bottom: 20px;
+    color: #34495e;
+}
+
+/* 底部样式 */
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+    color: #7f8c8d;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    header {
+        padding: 20px 10px;
+    }
+    
+    h1 {
+        font-size: 2em;
+    }
+    
+    .post,
+    .article-content,
+    .archive,
+    .about {
+        padding: 20px;
+    }
+    
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+}
