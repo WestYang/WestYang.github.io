@@ -2,10 +2,10 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - main  # 你的主分支
+      - master  # 你的主分支
   pull_request:
     branches:
-      - main
+      - master
 jobs:
   build:
     runs-on: ubuntu-latest
