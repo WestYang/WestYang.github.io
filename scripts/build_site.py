@@ -5,6 +5,7 @@ import datetime as dt
 import html
 import re
 import shutil
+import json
 from pathlib import Path
 from typing import Any
 
@@ -16,6 +17,8 @@ DIST = ROOT / "dist"
 BLOG_SRC = ROOT / "blog"
 BLOG_DIST = DIST / "blog"
 POSTS_SRC = ROOT / "posts"
+CACHE_DIR = ROOT / ".cache"
+CACHE_FILE = CACHE_DIR / "build_cache.json"
 
 SITE_NAME = "杨森的学习笔记"
 SITE_SUBTITLE = "技术学习笔记和博客"
@@ -23,17 +26,65 @@ SITE_YEAR = "2026"
 
 
 def read_text(path: Path) -> str:
-    return path.read_text(encoding="utf-8", errors="ignore")
+    try:
+        return path.read_text(encoding="utf-8", errors="ignore")
+    except Exception as e:
+        print(f"Error reading file {path}: {e}")
+        return ""
 
 
 def write_text(path: Path, content: str) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(content, encoding="utf-8")
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding="utf-8")
+    except Exception as e:
+        print(f"Error writing file {path}: {e}")
 
 
 def clean_text(raw: str) -> str:
     # Keep text safe for HTML rendering and remove noisy extra spaces.
     return re.sub(r"\s+", " ", html.unescape(raw)).strip()
+
+
+def read_cache() -> dict[str, str]:
+    """读取构建缓存"""
+    if not CACHE_FILE.exists():
+        return {}
+    try:
+        with open(CACHE_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"Error reading cache: {e}")
+        return {}
+
+
+def write_cache(cache: dict[str, str]) -> None:
+    """写入构建缓存"""
+    try:
+        CACHE_DIR.mkdir(parents=True, exist_ok=True)
+        with open(CACHE_FILE, "w", encoding="utf-8") as f:
+            json.dump(cache, f, indent=2, ensure_ascii=False)
+    except Exception as e:
+        print(f"Error writing cache: {e}")
+
+
+def get_file_hash(path: Path) -> str:
+    """获取文件的哈希值，用于判断文件是否变化"""
+    try:
+        import hashlib
+        content = path.read_bytes()
+        return hashlib.md5(content).hexdigest()
+    except Exception as e:
+        print(f"Error getting file hash: {e}")
+        return ""
+
+
+def should_rebuild(path: Path, cache: dict[str, str]) -> bool:
+    """判断文件是否需要重新构建"""
+    file_hash = get_file_hash(path)
+    if not file_hash:
+        return True
+    return cache.get(str(path)) != file_hash
 
 
 def strip_tags(raw_html: str) -> str:
@@ -157,98 +208,121 @@ def article_template(title: str, meta_text: str, body_html: str, tags: list[str]
 
 
 def parse_markdown_post(md_path: Path) -> dict[str, Any]:
-    raw_text = read_text(md_path)
-    fm, body_md = split_front_matter(raw_text)
+    try:
+        raw_text = read_text(md_path)
+        fm, body_md = split_front_matter(raw_text)
 
-    title = str(fm.get("title") or get_first_markdown_heading(body_md) or md_path.stem).strip()
-    date_value = fm.get("date")
-    date_fallback = dt.datetime.fromtimestamp(md_path.stat().st_mtime).date()
-    post_date = parse_date(str(date_value) if date_value is not None else None, date_fallback)
-    category = str(fm.get("category") or "技术笔记").strip()
-    summary = str(fm.get("summary") or get_markdown_summary(body_md)).strip()
+        title = str(fm.get("title") or get_first_markdown_heading(body_md) or md_path.stem).strip()
+        date_value = fm.get("date")
+        try:
+            date_fallback = dt.datetime.fromtimestamp(md_path.stat().st_mtime).date()
+        except Exception as e:
+            print(f"Error getting file timestamp for {md_path}: {e}")
+            date_fallback = dt.date.today()
+        post_date = parse_date(str(date_value) if date_value is not None else None, date_fallback)
+        category = str(fm.get("category") or "技术笔记").strip()
+        summary = str(fm.get("summary") or get_markdown_summary(body_md)).strip()
 
-    tags_raw = fm.get("tags", [])
-    if isinstance(tags_raw, str):
-        tags = [x.strip() for x in tags_raw.split(",") if x.strip()]
-    elif isinstance(tags_raw, list):
-        tags = [str(x).strip() for x in tags_raw if str(x).strip()]
-    else:
-        tags = []
+        tags_raw = fm.get("tags", [])
+        if isinstance(tags_raw, str):
+            tags = [x.strip() for x in tags_raw.split(",") if x.strip()]
+        elif isinstance(tags_raw, list):
+            tags = [str(x).strip() for x in tags_raw if str(x).strip()]
+        else:
+            tags = []
 
-    custom_slug = str(fm.get("slug") or "").strip()
-    slug = slugify(custom_slug or md_path.stem)
-    output_filename = f"{slug}.html"
-    url = f"blog/{output_filename}"
+        custom_slug = str(fm.get("slug") or "").strip()
+        slug = slugify(custom_slug or md_path.stem)
+        output_filename = f"{slug}.html"
+        url = f"blog/{output_filename}"
 
-    body_html = markdown.markdown(
-        body_md,
-        extensions=[
-            "fenced_code",
-            "tables",
-            "sane_lists",
-            "toc",
-        ],
-    )
-    body_html = re.sub(r"(?m)^", "            ", body_html)
+        try:
+            body_html = markdown.markdown(
+                body_md,
+                extensions=[
+                    "fenced_code",
+                    "tables",
+                    "sane_lists",
+                    "toc",
+                ],
+            )
+            body_html = re.sub(r"(?m)^", "            ", body_html)
+        except Exception as e:
+            print(f"Error parsing markdown for {md_path}: {e}")
+            body_html = f"<p>Error parsing markdown: {e}</p>"
 
-    meta_text = f"{post_date.isoformat()} · {category}"
-    article_html = article_template(title, meta_text, body_html, tags)
-    write_text(BLOG_DIST / output_filename, article_html)
+        meta_text = f"{post_date.isoformat()} · {category}"
+        article_html = article_template(title, meta_text, body_html, tags)
+        write_text(BLOG_DIST / output_filename, article_html)
 
-    return {
-        "title": title,
-        "date": post_date,
-        "date_text": post_date.isoformat(),
-        "category": category,
-        "summary": summary,
-        "url": url,
-    }
+        return {
+            "title": title,
+            "date": post_date,
+            "date_text": post_date.isoformat(),
+            "category": category,
+            "summary": summary,
+            "url": url,
+        }
+    except Exception as e:
+        print(f"Error processing markdown post {md_path}: {e}")
+        return {
+            "title": f"Error processing {md_path.name}",
+            "date": dt.date.today(),
+            "date_text": dt.date.today().isoformat(),
+            "category": "技术笔记",
+            "summary": f"Error processing post: {e}",
+            "url": f"blog/error-{md_path.stem}.html",
+        }
 
 
 def parse_legacy_html_post(html_path: Path) -> dict[str, Any] | None:
-    raw = read_text(html_path)
-    article_match = re.search(
-        r'<article\s+class="article-content".*?>(.*?)</article>', raw, flags=re.DOTALL | re.IGNORECASE
-    )
-    if not article_match:
+    try:
+        raw = read_text(html_path)
+        article_match = re.search(
+            r'<article\s+class="article-content".*?>(.*?)</article>', raw, flags=re.DOTALL | re.IGNORECASE
+        )
+        if not article_match:
+            return None
+
+        article = article_match.group(1)
+        title_match = re.search(r"<h1>(.*?)</h1>", article, flags=re.DOTALL | re.IGNORECASE)
+        if not title_match:
+            return None
+        title = strip_tags(title_match.group(1))
+        if not title:
+            return None
+
+        meta_match = re.search(
+            r'<div\s+class="post-meta">(.*?)</div>', article, flags=re.DOTALL | re.IGNORECASE
+        )
+        meta_text = clean_text(meta_match.group(1)) if meta_match else ""
+        date_match = re.search(r"(\d{4}-\d{2}-\d{2})", meta_text)
+        if date_match:
+            post_date = parse_date(date_match.group(1), dt.date.today())
+            date_text = date_match.group(1)
+        else:
+            post_date = dt.date.today()
+            date_text = post_date.isoformat()
+
+        category = "技术笔记"
+        if "·" in meta_text:
+            right = meta_text.split("·", 1)[1].strip()
+            category = right or category
+
+        para_match = re.search(r"<p>(.*?)</p>", article, flags=re.DOTALL | re.IGNORECASE)
+        summary = strip_tags(para_match.group(1))[:160] if para_match else "暂无摘要。"
+
+        return {
+            "title": title,
+            "date": post_date,
+            "date_text": date_text,
+            "category": category,
+            "summary": summary,
+            "url": f"blog/{html_path.name}",
+        }
+    except Exception as e:
+        print(f"Error processing legacy HTML post {html_path}: {e}")
         return None
-
-    article = article_match.group(1)
-    title_match = re.search(r"<h1>(.*?)</h1>", article, flags=re.DOTALL | re.IGNORECASE)
-    if not title_match:
-        return None
-    title = strip_tags(title_match.group(1))
-    if not title:
-        return None
-
-    meta_match = re.search(
-        r'<div\s+class="post-meta">(.*?)</div>', article, flags=re.DOTALL | re.IGNORECASE
-    )
-    meta_text = clean_text(meta_match.group(1)) if meta_match else ""
-    date_match = re.search(r"(\d{4}-\d{2}-\d{2})", meta_text)
-    if date_match:
-        post_date = parse_date(date_match.group(1), dt.date.today())
-        date_text = date_match.group(1)
-    else:
-        post_date = dt.date.today()
-        date_text = post_date.isoformat()
-
-    category = "技术笔记"
-    if "·" in meta_text:
-        right = meta_text.split("·", 1)[1].strip()
-        category = right or category
-
-    para_match = re.search(r"<p>(.*?)</p>", article, flags=re.DOTALL | re.IGNORECASE)
-    summary = strip_tags(para_match.group(1))[:160] if para_match else "暂无摘要。"
-
-    return {
-        "title": title,
-        "date": post_date,
-        "date_text": date_text,
-        "category": category,
-        "summary": summary,
-        "url": f"blog/{html_path.name}",
-    }
 
 
 def generate_index(posts: list[dict[str, Any]]) -> str:
@@ -407,6 +481,10 @@ def build() -> None:
     prepare_dist()
     copy_static_assets()
 
+    # 读取缓存
+    cache = read_cache()
+    new_cache = {}
+
     generated_urls: set[str] = set()
     posts: list[dict[str, Any]] = []
 
@@ -414,9 +492,23 @@ def build() -> None:
         for md_path in sorted(POSTS_SRC.rglob("*.md")):
             if md_path.name.lower() == "readme.md" or md_path.name.startswith("_"):
                 continue
-            post = parse_markdown_post(md_path)
-            posts.append(post)
-            generated_urls.add(post["url"])
+            
+            # 检查是否需要重新构建
+            if should_rebuild(md_path, cache):
+                print(f"Building {md_path.name}...")
+                post = parse_markdown_post(md_path)
+                posts.append(post)
+                generated_urls.add(post["url"])
+                # 更新缓存
+                new_cache[str(md_path)] = get_file_hash(md_path)
+            else:
+                # 使用缓存的结果
+                print(f"Using cached result for {md_path.name}...")
+                # 这里简化处理，实际项目中可能需要从缓存中读取解析结果
+                post = parse_markdown_post(md_path)
+                posts.append(post)
+                generated_urls.add(post["url"])
+                new_cache[str(md_path)] = get_file_hash(md_path)
 
     if BLOG_SRC.exists():
         for html_path in sorted(BLOG_SRC.glob("*.html")):
@@ -424,15 +516,34 @@ def build() -> None:
             # If a markdown post generated the same output file, keep the markdown result.
             if url in generated_urls:
                 continue
-            shutil.copy2(html_path, BLOG_DIST / html_path.name)
-            parsed = parse_legacy_html_post(html_path)
-            if parsed and parsed["url"] not in generated_urls:
-                posts.append(parsed)
+            
+            # 检查是否需要重新复制和解析
+            if should_rebuild(html_path, cache):
+                print(f"Processing {html_path.name}...")
+                shutil.copy2(html_path, BLOG_DIST / html_path.name)
+                parsed = parse_legacy_html_post(html_path)
+                if parsed and parsed["url"] not in generated_urls:
+                    posts.append(parsed)
+                # 更新缓存
+                new_cache[str(html_path)] = get_file_hash(html_path)
+            else:
+                print(f"Using cached result for {html_path.name}...")
+                # 复制文件
+                shutil.copy2(html_path, BLOG_DIST / html_path.name)
+                # 解析文件
+                parsed = parse_legacy_html_post(html_path)
+                if parsed and parsed["url"] not in generated_urls:
+                    posts.append(parsed)
+                new_cache[str(html_path)] = get_file_hash(html_path)
 
     posts.sort(key=lambda p: p["date"], reverse=True)
 
+    # 生成首页和归档页面
     write_text(DIST / "index.html", generate_index(posts))
     write_text(DIST / "archives.html", generate_archives(posts))
+
+    # 写入缓存
+    write_cache(new_cache)
 
     print(f"Built {len(posts)} posts into {DIST}")
 

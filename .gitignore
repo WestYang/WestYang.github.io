@@ -44,3 +44,7 @@ dist-ssr
 *.tmp
 *.temp
 .cache
+
+# Python
+__pycache__/
+*.pyc
