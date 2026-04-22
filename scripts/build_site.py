@@ -137,7 +137,7 @@ def article_template(title: str, meta_text: str, body_html: str, tags: list[str]
         </ul>
     </nav>
 
-    <main class="container">
+    <main class="container container-wide">
         <article class="article-content">
             <div class="post-meta">{html.escape(meta_text)}</div>
             <h1>{html.escape(title)}</h1>

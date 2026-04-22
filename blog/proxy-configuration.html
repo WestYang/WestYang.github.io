@@ -1,36 +1,35 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>代理配置指南 - 杨森的学习笔记</title>
+    <title>浠ｇ悊閰嶇疆鎸囧崡 - 鏉ㄦ．鐨勫涔犵瑪璁?/title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
     <header>
-        <h1>杨森的学习笔记</h1>
-        <p class="subtitle">技术学习笔记和博客</p>
+        <h1>鏉ㄦ．鐨勫涔犵瑪璁?/h1>
+        <p class="subtitle">鎶€鏈涔犵瑪璁板拰鍗氬</p>
     </header>
 
     <nav>
         <ul>
-            <li><a href="../index.html">首页</a></li>
-            <li><a href="../archives.html">归档</a></li>
-            <li><a href="../about.html">关于</a></li>
+            <li><a href="../index.html">棣栭〉</a></li>
+            <li><a href="../archives.html">褰掓。</a></li>
+            <li><a href="../about.html">鍏充簬</a></li>
         </ul>
     </nav>
 
-    <main class="container">
+    <main class="container container-wide">
         <article class="article-content">
-            <div class="post-meta">2026-04-16 · 技术笔记</div>
-            <h1>代理配置指南</h1>
+            <div class="post-meta">2026-04-16 路 鎶€鏈瑪璁?/div>
+            <h1>浠ｇ悊閰嶇疆鎸囧崡</h1>
 
-            <h2>1. yum 配置代理</h2>
+            <h2>1. yum 閰嶇疆浠ｇ悊</h2>
             <pre><code># vim /etc/yum.conf
-# 加入下面一行代理配置
-proxy=http://10.33.49.191:10809</code></pre>
+# 鍔犲叆涓嬮潰涓€琛屼唬鐞嗛厤缃?proxy=http://10.33.49.191:10809</code></pre>
 
-            <h2>2. Docker 配置代理</h2>
+            <h2>2. Docker 閰嶇疆浠ｇ悊</h2>
             <pre><code>sudo mkdir -p /etc/systemd/system/docker.service.d
 vim /etc/systemd/system/docker.service.d/http-proxy.conf
 
@@ -39,13 +38,13 @@ Environment="HTTP_PROXY=http://your-proxy-server:port/"
 Environment="HTTPS_PROXY=https://your-proxy-server:port/"
 Environment="NO_PROXY=localhost,127.0.0.1,.example.com"</code></pre>
 
-            <h2>3. pip 配置代理和镜像源</h2>
+            <h2>3. pip 閰嶇疆浠ｇ悊鍜岄暅鍍忔簮</h2>
             <pre><code>pip config set global.proxy http://10.100.28.114:3180
 pip config set global.index-url https://mirrors.ustc.edu.cn/pypi/simple
 pip config set global.trusted-host mirrors.ustc.edu.cn</code></pre>
 
             <div class="tags">
-                <span class="tag">代理配置</span>
+                <span class="tag">浠ｇ悊閰嶇疆</span>
                 <span class="tag">yum</span>
                 <span class="tag">Docker</span>
                 <span class="tag">pip</span>
@@ -54,9 +53,10 @@ pip config set global.trusted-host mirrors.ustc.edu.cn</code></pre>
     </main>
 
     <footer>
-        <p>&copy; 2026 杨森的学习笔记</p>
+        <p>&copy; 2026 鏉ㄦ．鐨勫涔犵瑪璁?/p>
     </footer>
 
     <script src="../js/script.js"></script>
 </body>
 </html>
+

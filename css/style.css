@@ -18,6 +18,10 @@ body {
     padding: 20px;
 }
 
+.container.container-wide {
+    max-width: 1200px;
+}
+
 /* 头部样式 */
 header {
     background-color: #fff;
