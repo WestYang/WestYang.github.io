@@ -8,12 +8,16 @@ ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
 
 
-def replace_dir(src: Path, dst: Path) -> None:
+def sync_dir(src: Path, dst: Path) -> None:
     if not src.exists():
         return
-    if dst.exists():
-        shutil.rmtree(dst)
-    shutil.copytree(src, dst)
+    dst.mkdir(parents=True, exist_ok=True)
+    for item in src.iterdir():
+        target = dst / item.name
+        if item.is_dir():
+            shutil.copytree(item, target, dirs_exist_ok=True)
+        else:
+            shutil.copy2(item, target)
 
 
 def replace_file(src: Path, dst: Path) -> None:
@@ -27,9 +31,9 @@ def sync() -> None:
     if not DIST.exists():
         raise FileNotFoundError("dist directory does not exist, run build first")
 
-    replace_dir(DIST / "blog", ROOT / "blog")
-    replace_dir(DIST / "css", ROOT / "css")
-    replace_dir(DIST / "js", ROOT / "js")
+    sync_dir(DIST / "blog", ROOT / "blog")
+    sync_dir(DIST / "css", ROOT / "css")
+    sync_dir(DIST / "js", ROOT / "js")
 
     replace_file(DIST / "index.html", ROOT / "index.html")
     replace_file(DIST / "archives.html", ROOT / "archives.html")

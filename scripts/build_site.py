@@ -420,6 +420,10 @@ def build() -> None:
 
     if BLOG_SRC.exists():
         for html_path in sorted(BLOG_SRC.glob("*.html")):
+            url = f"blog/{html_path.name}"
+            # If a markdown post generated the same output file, keep the markdown result.
+            if url in generated_urls:
+                continue
             shutil.copy2(html_path, BLOG_DIST / html_path.name)
             parsed = parse_legacy_html_post(html_path)
             if parsed and parsed["url"] not in generated_urls:
