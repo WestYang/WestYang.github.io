@@ -1,74 +1,73 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>鍚庣寮€鍙戞渶浣冲疄璺?- 鏉ㄦ．鐨勫涔犵瑪璁?/title>
+    <title>后端开发最佳实践 - 杨森的学习笔记</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
     <header>
-        <h1>鏉ㄦ．鐨勫涔犵瑪璁?/h1>
-        <p class="subtitle">鎶€鏈涔犵瑪璁板拰鍗氬</p>
+        <h1>杨森的学习笔记</h1>
+        <p class="subtitle">技术学习笔记和博客</p>
     </header>
 
     <nav>
         <ul>
-            <li><a href="../index.html">棣栭〉</a></li>
-            <li><a href="../archives.html">褰掓。</a></li>
-            <li><a href="../about.html">鍏充簬</a></li>
+            <li><a href="../index.html">首页</a></li>
+            <li><a href="../archives.html">归档</a></li>
+            <li><a href="../about.html">关于</a></li>
         </ul>
     </nav>
 
-    <main class="container container-wide">
+    <main class="container">
         <article class="article-content">
-            <div class="post-meta">2026-04-14 路 鍚庣寮€鍙?/div>
-            <h1>鍚庣寮€鍙戞渶浣冲疄璺?/h1>
+            <div class="post-meta">2026-04-14 · 后端开发</div>
+            <h1>后端开发最佳实践</h1>
 
-            <h2>1. 鏋舵瀯璁捐</h2>
-            <p>娓呮櫚鐨勭郴缁熻竟鐣屽拰鑱岃矗鍒掑垎锛屾槸鍚庣绯荤粺鍙淮鎶ゃ€佸彲鎵╁睍鐨勫墠鎻愩€?/p>
+            <h2>1. 架构设计</h2>
+            <p>清晰的系统边界和职责划分，是后端系统可维护、可扩展的前提。</p>
             <ul>
-                <li>浼樺厛閲囩敤娓呮櫚鐨勫垎灞傜粨鏋?/li>
-                <li>缁撳悎涓氬姟瑙勬ā閫夋嫨鍗曚綋鎴栧井鏈嶅姟鏋舵瀯</li>
-                <li>璁捐绋冲畾涓旀槗鐞嗚В鐨?API 鎺ュ彛</li>
-                <li>閫氳繃娑堟伅闃熷垪涓虹郴缁熻В鑰?/li>
-                <li>鎻愬墠鑰冭檻鎵╁睍鎬у拰瀹归敊鑳藉姏</li>
+                <li>优先采用清晰的分层结构</li>
+                <li>结合业务规模选择单体或微服务架构</li>
+                <li>设计稳定且易理解的 API 接口</li>
+                <li>通过消息队列为系统解耦</li>
+                <li>提前考虑扩展性和容错能力</li>
             </ul>
 
-            <h2>2. 鏁版嵁搴撲紭鍖?/h2>
-            <p>鏁版嵁搴撴槸寰堝绯荤粺鎬ц兘鐡堕鐨勯泦涓偣锛岃秺鏃╁缓绔嬭鑼冿紝瓒婁笉瀹规槗鍦ㄥ悗鏈熻鍔ㄦ晳鐏€?/p>
+            <h2>2. 数据库优化</h2>
+            <p>数据库是很多系统性能瓶颈的集中点，越早建立规范，越不容易在后期被动救火。</p>
             <ul>
-                <li>鍚堢悊璁捐琛ㄧ粨鏋勫拰瀛楁绫诲瀷</li>
-                <li>涓洪珮棰戞煡璇㈠缓绔嬪悎閫傜储寮?/li>
-                <li>鎸佺画浼樺寲鎱?SQL</li>
-                <li>浣跨敤杩炴帴姹犵鐞嗘暟鎹簱杩炴帴</li>
-                <li>寤虹珛鍙仮澶嶇殑澶囦唤鏈哄埗</li>
+                <li>合理设计表结构和字段类型</li>
+                <li>为高频查询建立合适索引</li>
+                <li>持续优化慢 SQL</li>
+                <li>使用连接池管理数据库连接</li>
+                <li>建立可恢复的备份机制</li>
             </ul>
 
-            <h2>3. 瀹夊叏鎺柦</h2>
-            <p>瀹夊叏涓嶆槸涓婄嚎鍓嶇殑闄勫姞椤癸紝鑰屽簲璇ユ槸璁捐闃舵灏辩撼鍏ョ殑榛樿绾︽潫銆?/p>
+            <h2>3. 安全措施</h2>
+            <p>安全不是上线前的附加项，而应该是设计阶段就纳入的默认约束。</p>
             <ul>
-                <li>榛樿鍚敤 HTTPS</li>
-                <li>钀藉疄璁よ瘉鍜屾巿鏉冩満鍒?/li>
-                <li>闃叉 SQL 娉ㄥ叆</li>
-                <li>闃叉 XSS 绛夊父瑙佹敾鍑?/li>
-                <li>鍙婃椂鏇存柊渚濊禆鍜岃繍琛岀幆澧?/li>
+                <li>默认启用 HTTPS</li>
+                <li>落实认证和授权机制</li>
+                <li>防止 SQL 注入</li>
+                <li>防止 XSS 等常见攻击</li>
+                <li>及时更新依赖和运行环境</li>
             </ul>
 
             <div class="tags">
-                <span class="tag">鍚庣寮€鍙?/span>
-                <span class="tag">鏋舵瀯璁捐</span>
-                <span class="tag">鏁版嵁搴撲紭鍖?/span>
-                <span class="tag">瀹夊叏</span>
+                <span class="tag">后端开发</span>
+                <span class="tag">架构设计</span>
+                <span class="tag">数据库优化</span>
+                <span class="tag">安全</span>
             </div>
         </article>
     </main>
 
     <footer>
-        <p>&copy; 2026 鏉ㄦ．鐨勫涔犵瑪璁?/p>
+        <p>&copy; 2026 杨森的学习笔记</p>
     </footer>
 
     <script src="../js/script.js"></script>
 </body>
 </html>
-
