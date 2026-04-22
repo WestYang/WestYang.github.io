@@ -11,7 +11,7 @@
         <h1>杨森的学习笔记</h1>
         <p class="subtitle">技术学习笔记和博客</p>
     </header>
-    
+
     <nav>
         <ul>
             <li><a href="../index.html">首页</a></li>
@@ -19,55 +19,55 @@
             <li><a href="../about.html">关于</a></li>
         </ul>
     </nav>
-    
-    <div class="container">
-        <div class="article-content">
+
+    <main class="container">
+        <article class="article-content">
             <div class="post-meta">2026-04-14 · 后端开发</div>
             <h1>后端开发最佳实践</h1>
-            
+
             <h2>1. 架构设计</h2>
-            <p>良好的架构设计是后端系统稳定运行的基础：</p>
+            <p>清晰的系统边界和职责划分，是后端系统可维护、可扩展的前提。</p>
             <ul>
-                <li>使用分层架构</li>
-                <li>采用微服务架构</li>
-                <li>设计合理的API接口</li>
-                <li>使用消息队列解耦系统</li>
-                <li>考虑系统的可扩展性</li>
+                <li>优先采用清晰的分层结构</li>
+                <li>结合业务规模选择单体或微服务架构</li>
+                <li>设计稳定且易理解的 API 接口</li>
+                <li>通过消息队列为系统解耦</li>
+                <li>提前考虑扩展性和容错能力</li>
             </ul>
-            
+
             <h2>2. 数据库优化</h2>
-            <p>数据库是后端系统的核心，优化数据库性能至关重要：</p>
+            <p>数据库是很多系统性能瓶颈的集中点，越早建立规范，越不容易在后期被动救火。</p>
             <ul>
-                <li>合理设计数据库表结构</li>
-                <li>创建适当的索引</li>
-                <li>优化SQL查询</li>
-                <li>使用数据库连接池</li>
-                <li>定期备份数据库</li>
+                <li>合理设计表结构和字段类型</li>
+                <li>为高频查询建立合适索引</li>
+                <li>持续优化慢 SQL</li>
+                <li>使用连接池管理数据库连接</li>
+                <li>建立可恢复的备份机制</li>
             </ul>
-            
+
             <h2>3. 安全措施</h2>
-            <p>后端系统的安全性是不容忽视的：</p>
+            <p>安全不是上线前的附加项，而应该是设计阶段就纳入的默认约束。</p>
             <ul>
-                <li>使用HTTPS</li>
-                <li>实施身份验证和授权</li>
-                <li>防止SQL注入</li>
-                <li>防止XSS攻击</li>
-                <li>定期更新依赖库</li>
+                <li>默认启用 HTTPS</li>
+                <li>落实认证和授权机制</li>
+                <li>防止 SQL 注入</li>
+                <li>防止 XSS 等常见攻击</li>
+                <li>及时更新依赖和运行环境</li>
             </ul>
-            
+
             <div class="tags">
                 <span class="tag">后端开发</span>
                 <span class="tag">架构设计</span>
                 <span class="tag">数据库优化</span>
-                <span class="tag">安全措施</span>
+                <span class="tag">安全</span>
             </div>
-        </div>
-    </div>
-    
+        </article>
+    </main>
+
     <footer>
         <p>&copy; 2026 杨森的学习笔记</p>
     </footer>
-    
+
     <script src="../js/script.js"></script>
 </body>
 </html>

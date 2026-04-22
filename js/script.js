@@ -1,43 +1,43 @@
-// 平滑滚动
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-            behavior: 'smooth'
-        });
+document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener('click', (event) => {
+        const selector = anchor.getAttribute('href');
+        const target = selector ? document.querySelector(selector) : null;
+
+        if (!target) {
+            return;
+        }
+
+        event.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth' });
     });
 });
 
-// 导航菜单高亮
+function normalizePathname(pathname) {
+    if (!pathname || pathname === '/') {
+        return '/index.html';
+    }
+
+    return pathname.endsWith('/') ? `${pathname}index.html` : pathname;
+}
+
 function highlightNav() {
-    const currentPath = window.location.pathname;
+    const currentPath = normalizePathname(window.location.pathname);
     const navLinks = document.querySelectorAll('nav a');
-    
-    navLinks.forEach(link => {
-        const linkPath = new URL(link.href).pathname;
-        if (currentPath === linkPath || (currentPath === '/' && linkPath.includes('index'))) {
-            link.style.backgroundColor = '#2980b9';
+
+    navLinks.forEach((link) => {
+        const linkPath = normalizePathname(new URL(link.href).pathname);
+        const isActive = currentPath === linkPath;
+
+        link.classList.toggle('active', isActive);
+
+        if (isActive) {
+            link.setAttribute('aria-current', 'page');
         } else {
-            link.style.backgroundColor = '';
+            link.removeAttribute('aria-current');
         }
     });
 }
 
-// 页面加载完成后执行
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
     highlightNav();
-    
-    // 添加文章卡片悬停效果
-    const posts = document.querySelectorAll('.post');
-    posts.forEach(post => {
-        post.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-5px)';
-            this.style.boxShadow = '0 5px 15px rgba(0,0,0,0.1)';
-        });
-        
-        post.addEventListener('mouseleave', function() {
-            this.style.transform = '';
-            this.style.boxShadow = '';
-        });
-    });
 });
