@@ -1,26 +1,28 @@
-name: Build and Deploy Pages
+name: Build Markdown and Publish Root
 
 on:
   push:
     branches:
       - master
+    paths:
+      - "posts/**/*.md"
+      - "scripts/build_site.py"
+      - "scripts/sync_dist_to_root.py"
+      - ".github/workflows/deploy-pages.yml"
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: true
+  contents: write
 
 jobs:
-  build:
+  publish:
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -35,21 +37,17 @@ jobs:
       - name: Build Site
         run: python scripts/build_site.py
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+      - name: Sync Dist to Root
+        run: python scripts/sync_dist_to_root.py
 
-      - name: Upload Artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Commit Generated HTML
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add blog index.html archives.html about.html css js
+          if git diff --cached --quiet; then
+            echo "No generated changes"
+            exit 0
+          fi
+          git commit -m "chore: auto-generate html from markdown"
+          git push
